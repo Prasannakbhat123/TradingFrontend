@@ -208,7 +208,6 @@ export function OverviewPage() {
 
   const concentration = useMemo(() => {
     const entries = Object.entries(portfolio.summary?.concentration ?? {});
-    const max = Math.max(1, ...entries.map(([, v]) => v));
     return entries.sort((a, b) => b[1] - a[1]).slice(0, 4);
   }, [portfolio.summary?.concentration]);
 

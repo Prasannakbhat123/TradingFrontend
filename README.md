@@ -13,6 +13,8 @@ npm run dev
 
 App: `http://localhost:5173` (Vite proxies `/v1` → `http://localhost:4000`).
 
+Leave `VITE_API_URL` empty for local backend on port 4000.
+
 Start the backend first. Demo password: `password123`.
 
 | Email | Role |
@@ -22,5 +24,17 @@ Start the backend first. Demo password: `password123`.
 | dealer@apex.dev | Provider dealer |
 | risk@lattice.dev | Risk |
 | admin@lattice.dev | Admin |
+
+## Vercel
+
+Framework preset: **Vite**. Root: repo root.
+
+**Environment variable (required for production):**
+
+| Name | Value |
+|---|---|
+| `VITE_API_URL` | Render URL, no trailing slash, e.g. `https://lattice-xxxx.onrender.com` |
+
+Set it for Production and Preview, then **redeploy**. Vite inlines this at build time.
 
 See `docs/Lattice-E2E-Test-Guide.md` for walkthroughs.
