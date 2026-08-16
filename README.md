@@ -13,7 +13,7 @@ npm run dev
 
 App: `http://localhost:5173` (Vite proxies `/v1` → `http://localhost:4000`).
 
-Leave `VITE_API_URL` empty for local backend on port 4000.
+Leave `VITE_API_URL` empty for local backend on port 4000
 
 Start the backend first. Demo password: `password123`.
 
