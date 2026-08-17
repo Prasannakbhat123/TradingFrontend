@@ -283,9 +283,10 @@ export function RfqPage() {
     const syncForm = opts?.syncForm !== false;
     setQuotesLoading(true);
     try {
-      const r = await api<{ rfq: PastRfq; quotes: Quote[] }>(`/v1/rfq/${id}`);
+      const r = await api<{ rfq: PastRfq; quotes: Quote[]; references?: Refs }>(`/v1/rfq/${id}`);
       let quotes = r.quotes;
       let rfq = r.rfq;
+      let references = r.references || {};
       const pool = opts?.list?.length ? opts.list : pastAllRef.current;
 
       if (!quotes.length && syncForm) {
@@ -293,14 +294,18 @@ export function RfqPage() {
           pool.find((x) => x._id !== id && x.gpuType === r.rfq.gpuType && rfqHasQuotes(x)) ||
           pool.find((x) => x._id !== id && rfqHasQuotes(x));
         if (fallback) {
-          const extra = await api<{ rfq: PastRfq; quotes: Quote[] }>(`/v1/rfq/${fallback._id}`);
+          const extra = await api<{ rfq: PastRfq; quotes: Quote[]; references?: Refs }>(
+            `/v1/rfq/${fallback._id}`
+          );
           quotes = extra.quotes;
           rfq = extra.rfq;
+          references = extra.references || {};
         }
       }
 
       setRfqId(rfq._id);
       setQuotes(quotes);
+      setRefs(references);
       setAcceptedId(quotes.find((q) => q.status === 'accepted')?._id ?? null);
       if (syncForm) {
         setForm((f) => ({
@@ -577,7 +582,9 @@ export function RfqPage() {
                     ? `$${refs.ornn.pricePerGpuHour.toFixed(2)}`
                     : '—'}
                 </div>
-                <div className="text-[11px] text-[var(--color-muted)] mt-1">Index $/GPU-hr</div>
+                <div className="text-[11px] text-[var(--color-muted)] mt-1">
+                  {refs.ornn?.pricePerGpuHour != null ? 'Index $/GPU-hr' : 'Waiting on Ornn feed'}
+                </div>
               </div>
               <div className="overview-stat-card">
                 <div className="flex items-center gap-2 text-[var(--color-muted)]">
@@ -589,7 +596,11 @@ export function RfqPage() {
                     ? `$${refs.gpucloudprices.pricePerGpuHour.toFixed(2)}`
                     : '—'}
                 </div>
-                <div className="text-[11px] text-[var(--color-muted)] mt-1">Multi-cloud board</div>
+                <div className="text-[11px] text-[var(--color-muted)] mt-1">
+                  {refs.gpucloudprices?.pricePerGpuHour != null
+                    ? 'Multi-cloud board'
+                    : 'Waiting on cloud board'}
+                </div>
               </div>
               <div className="overview-stat-card">
                 <div className="flex items-center gap-2 text-[var(--color-muted)]">
