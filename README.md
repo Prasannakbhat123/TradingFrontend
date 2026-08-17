@@ -27,7 +27,7 @@ Start the backend first. Demo password: `password123`.
 
 ## Vercel
 
-Framework preset: **Vite**. Root: repo root.
+Framework preset: **Vite**. Root: repo root. `vercel.json` rewrites client routes to `index.html` so refresh on `/pipeline` (etc.) does not 404.
 
 **Environment variable (required for production):**
 
